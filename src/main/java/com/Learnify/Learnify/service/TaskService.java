@@ -49,4 +49,8 @@ public class TaskService {
         Task updatedTask = taskRepository.save(existingTask);
         return TaskMapper.toDto(updatedTask);
     }
+
+    public void deleteTask(UUID id) {
+        taskRepository.deleteById(id);
+    }
 }
