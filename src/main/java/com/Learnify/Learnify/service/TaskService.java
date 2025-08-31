@@ -36,4 +36,17 @@ public class TaskService {
         Task savedTask = taskRepository.save(taskEntity);
         return TaskMapper.toDto(savedTask);
     }
+
+    public TaskDtoResponse updateTask(UUID id, TaskDtoRequest taskDtoRequest) {
+        Task existingTask = taskRepository.findById(id).orElseThrow();
+
+        existingTask.setTitle(taskDtoRequest.getTitle());
+        existingTask.setDescription(taskDtoRequest.getDescription());
+        existingTask.setStatus(taskDtoRequest.getStatus());
+        existingTask.setPriority(taskDtoRequest.getPriority());
+        existingTask.setDeadline(taskDtoRequest.getDeadline());
+
+        Task updatedTask = taskRepository.save(existingTask);
+        return TaskMapper.toDto(updatedTask);
+    }
 }

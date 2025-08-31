@@ -35,4 +35,9 @@ public class TaskController {
         return taskService.saveTask(taskDtoRequest);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<TaskDtoResponse> updateTask(@PathVariable UUID id, @RequestBody TaskDtoRequest taskDtoRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.updateTask(id, taskDtoRequest));
+    }
+
 }
