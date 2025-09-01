@@ -35,33 +35,14 @@ public class TaskService {
     }
 
     public TaskDtoResponse saveTask(TaskDtoRequest taskDtoRequest) {
-        if (taskDtoRequest.getTitle() == null || taskDtoRequest.getTitle().isEmpty()) {
-            throw new InvalidTaskException("Title cannot be empty.");
-        }
-
-        if (taskDtoRequest.getDescription() == null || taskDtoRequest.getDescription().isEmpty()) {
-            throw new InvalidTaskException("Description cannot be empty.");
-        }
-
-        if (taskDtoRequest.getStatus() == null) {
-            throw new InvalidTaskException("Status must be provided.");
-        }
-
-        if (taskDtoRequest.getPriority() == null) {
-            throw new InvalidTaskException("Priority must be provided.");
-        }
-
-        if (taskDtoRequest.getDeadline() != null && taskDtoRequest.getDeadline().isBefore(LocalDateTime.now())) {
-            throw new InvalidTaskException("Deadline cannot be in the past.");
-        }
-
         Task taskEntity = TaskMapper.toEntity(taskDtoRequest);
         Task savedTask = taskRepository.save(taskEntity);
+
         return TaskMapper.toDto(savedTask);
     }
 
     public TaskDtoResponse updateTask(UUID id, TaskDtoRequest taskDtoRequest) {
-        Task existingTask = taskRepository.findById(id).orElseThrow();
+        Task existingTask = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Cannot update because id: " + id + " does not exist."));
 
         existingTask.setTitle(taskDtoRequest.getTitle());
         existingTask.setDescription(taskDtoRequest.getDescription());
