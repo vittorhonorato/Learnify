@@ -31,8 +31,8 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public TaskDtoResponse createTask(@RequestBody TaskDtoRequest taskDtoRequest) {
-        return taskService.saveTask(taskDtoRequest);
+    public ResponseEntity<TaskDtoResponse> createTask(@RequestBody TaskDtoRequest taskDtoRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.saveTask(taskDtoRequest));
     }
 
     @PutMapping("/update/{id}")
