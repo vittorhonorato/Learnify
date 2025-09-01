@@ -52,6 +52,10 @@ public class TaskService {
     }
 
     public void deleteTask(UUID id) {
+        if(!taskRepository.existsById(id)) {
+            throw new TaskNotFoundException("Cannot delete because id: " + id + " does not exist.");
+        }
+
         taskRepository.deleteById(id);
     }
 }
