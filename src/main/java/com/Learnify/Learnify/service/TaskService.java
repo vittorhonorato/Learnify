@@ -4,10 +4,12 @@ import com.Learnify.Learnify.dto.TaskDtoRequest;
 import com.Learnify.Learnify.dto.TaskDtoResponse;
 import com.Learnify.Learnify.dto.TaskMapper;
 import com.Learnify.Learnify.entity.Task;
+import com.Learnify.Learnify.exception.InvalidTaskException;
 import com.Learnify.Learnify.exception.TaskNotFoundException;
 import com.Learnify.Learnify.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,8 +34,28 @@ public class TaskService {
         return TaskMapper.toDto(taskById);
     }
 
-    public TaskDtoResponse saveTask(TaskDtoRequest task) {
-        Task taskEntity = TaskMapper.toEntity(task);
+    public TaskDtoResponse saveTask(TaskDtoRequest taskDtoRequest) {
+        if (taskDtoRequest.getTitle() == null || taskDtoRequest.getTitle().isEmpty()) {
+            throw new InvalidTaskException("Title cannot be empty.");
+        }
+
+        if (taskDtoRequest.getDescription() == null || taskDtoRequest.getDescription().isEmpty()) {
+            throw new InvalidTaskException("Description cannot be empty.");
+        }
+
+        if (taskDtoRequest.getStatus() == null) {
+            throw new InvalidTaskException("Status must be provided.");
+        }
+
+        if (taskDtoRequest.getPriority() == null) {
+            throw new InvalidTaskException("Priority must be provided.");
+        }
+
+        if (taskDtoRequest.getDeadline() != null && taskDtoRequest.getDeadline().isBefore(LocalDateTime.now())) {
+            throw new InvalidTaskException("Deadline cannot be in the past.");
+        }
+
+        Task taskEntity = TaskMapper.toEntity(taskDtoRequest);
         Task savedTask = taskRepository.save(taskEntity);
         return TaskMapper.toDto(savedTask);
     }
@@ -52,7 +74,7 @@ public class TaskService {
     }
 
     public void deleteTask(UUID id) {
-        if(!taskRepository.existsById(id)) {
+        if (!taskRepository.existsById(id)) {
             throw new TaskNotFoundException("Cannot delete because id: " + id + " does not exist.");
         }
 

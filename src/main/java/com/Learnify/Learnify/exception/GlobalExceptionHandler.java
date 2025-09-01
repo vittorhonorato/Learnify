@@ -17,4 +17,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(InvalidTaskException.class)
+    private ResponseEntity<ErrorResponse> invalidTaskException(InvalidTaskException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, 404, ex.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
 }

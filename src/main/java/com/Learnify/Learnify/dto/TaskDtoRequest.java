@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Data
 public class TaskDtoRequest {
-    public String title;
-    public String description;
-    public Status status;
-    public Priority priority;
-    public LocalDateTime deadline;
+    private String title;
+    private String description;
+    private Status status;
+    private Priority priority;
+    private LocalDateTime deadline;
 }

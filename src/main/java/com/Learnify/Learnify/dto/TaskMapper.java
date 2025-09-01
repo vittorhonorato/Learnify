@@ -16,11 +16,11 @@ public class TaskMapper {
 
     public static Task toEntity(TaskDtoRequest dto) {
        Task task = new Task();
-        task.setTitle(dto.title);
-        task.setDescription(dto.description);
-        task.setStatus(dto.status);
-        task.setPriority(dto.priority);
-        task.setDeadline(dto.deadline);
+        task.setTitle(dto.getTitle());
+        task.setDescription(dto.getDescription());
+        task.setStatus(dto.getStatus());
+        task.setPriority(dto.getPriority());
+        task.setDeadline(dto.getDeadline());
         return task;
     }
 }
