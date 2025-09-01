@@ -3,6 +3,7 @@ package com.Learnify.Learnify.controller;
 import com.Learnify.Learnify.dto.TaskDtoRequest;
 import com.Learnify.Learnify.dto.TaskDtoResponse;
 import com.Learnify.Learnify.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,15 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<TaskDtoResponse> createTask(@RequestBody TaskDtoRequest taskDtoRequest) {
+    public ResponseEntity<TaskDtoResponse> createTask(@RequestBody @Valid TaskDtoRequest taskDtoRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.saveTask(taskDtoRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TaskDtoResponse> updateTask(@PathVariable UUID id, @RequestBody TaskDtoRequest taskDtoRequest) {
+    public ResponseEntity<TaskDtoResponse> updateTask(
+            @PathVariable UUID id,
+            @Valid @RequestBody TaskDtoRequest taskDtoRequest
+    ) {
         return ResponseEntity.status(HttpStatus.OK).body(taskService.updateTask(id, taskDtoRequest));
     }
 
