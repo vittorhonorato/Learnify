@@ -4,6 +4,7 @@ import com.Learnify.Learnify.dto.TaskDtoRequest;
 import com.Learnify.Learnify.dto.TaskDtoResponse;
 import com.Learnify.Learnify.dto.TaskMapper;
 import com.Learnify.Learnify.entity.Task;
+import com.Learnify.Learnify.exception.TaskNotFoundException;
 import com.Learnify.Learnify.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class TaskService {
     }
 
     public TaskDtoResponse getTaskById(UUID id) {
-        Task taskById = taskRepository.findById(id).orElseThrow();
+        Task taskById = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
 
         return TaskMapper.toDto(taskById);
     }
