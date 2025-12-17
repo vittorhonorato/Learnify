@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("task")
+@CrossOrigin("*")
 public class TaskController {
 
     private final TaskService taskService;
